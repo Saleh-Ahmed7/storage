@@ -5,6 +5,7 @@ use Picqer\Barcode\BarcodeGeneratorHTML; // أو PNG
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\StoreAction;
 
 class ProductController extends Controller
 {
@@ -76,5 +77,70 @@ public function searchByBarcode(Request $request)
     }
 }
 
+
+public function updateQuantity(Request $request, $id)
+{
+    $request->validate([
+        'action_type' => 'required|in:add,withdraw',
+        'quantity_changed' => 'required|integer|min:1',
+    ]);
+
+    $product = Product::findOrFail($id);
+
+    if ($request->action_type == 'withdraw') {
+        if ($product->quantity < $request->quantity_changed) {
+            return back()->with('error', 'الكمية غير كافية للسحب.');
+        }
+        $product->quantity -= $request->quantity_changed;
+    } else {
+        $product->quantity += $request->quantity_changed;
+    }
+
+    $product->save();
+
+    // سجل الحركة في جدول store_actions
+    StoreAction::create([
+        'store_id' => $product->id,
+        'action_type' => $request->action_type,
+        'quantity_changed' => $request->quantity_changed,
+    ]);
+
+    return back()->with('success', 'تم تحديث الكمية وتسجيل العملية بنجاح.');
+}
+public function updateAllQuantities(Request $request)
+{
+    $products = $request->input('products', []);
+
+    foreach ($products as $id => $data) {
+        if (empty($data['action_type']) || empty($data['quantity_changed'])) {
+            continue;
+        }
+
+        $product = Product::find($id);
+        if (!$product) continue;
+
+        $quantityChanged = (int)$data['quantity_changed'];
+
+        if ($data['action_type'] == 'withdraw') {
+            if ($product->quantity < $quantityChanged) {
+                continue; // تخطي المنتج إذا الكمية غير كافية
+            }
+            $product->quantity -= $quantityChanged;
+        } elseif ($data['action_type'] == 'add') {
+            $product->quantity += $quantityChanged;
+        }
+
+        $product->save();
+
+        // سجل الحركة في جدول store_actions
+        \App\Models\StoreAction::create([
+            'store_id' => $product->id,
+            'action_type' => $data['action_type'],
+            'quantity_changed' => $quantityChanged,
+        ]);
+    }
+
+    return back()->with('success', 'تم حفظ جميع التعديلات وتسجيل العمليات بنجاح.');
+}
 
 }
