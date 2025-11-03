@@ -11,4 +11,9 @@ class Product extends Model
 protected $table = 'store'; 
 
 protected $fillable = ['product_name', 'quantity', 'location', 'barcode'];
+public function actions()
+{
+return $this->belongsTo(\App\Models\Product::class, 'store_id');
+}
+
 }

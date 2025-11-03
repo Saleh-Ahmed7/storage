@@ -10,10 +10,15 @@ class StoreAction extends Model
     use HasFactory;
 
     protected $table = 'store_actions';
-    protected $fillable = ['store_id', 'action_type', 'quantity_changed'];
+
+    protected $fillable = [
+        'product_id', // أو store_id حسب العمود الفعلي عندك
+        'action_type',
+        'quantity_changed',
+    ];
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'store_id');
+        return $this->belongsTo(Product::class, 'product_id'); // غيّر المفتاح لو يختلف عندك
     }
 }
