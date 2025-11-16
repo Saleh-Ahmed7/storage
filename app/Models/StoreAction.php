@@ -12,13 +12,13 @@ class StoreAction extends Model
     protected $table = 'store_actions';
 
     protected $fillable = [
-        'product_id', // أو store_id حسب العمود الفعلي عندك
+        'product_id',
         'action_type',
         'quantity_changed',
     ];
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id'); // غيّر المفتاح لو يختلف عندك
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

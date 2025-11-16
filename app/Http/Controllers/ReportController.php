@@ -17,7 +17,8 @@ class ReportController extends Controller
         $query = StoreAction::with('product');
 
         if ($from && $to) {
-            $query->whereBetween('created_at', [$from, $to]);
+            // استخدام صيغة التاريخ كما يتم إرسالها من الفورم (YYYY-MM-DD)
+            $query->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59']);
         }
 
         $actions = $query->orderBy('created_at', 'desc')->get();
@@ -36,7 +37,7 @@ class ReportController extends Controller
         $query = StoreAction::with('product');
 
         if ($from && $to) {
-            $query->whereBetween('created_at', [$from, $to]);
+            $query->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59']);
         }
 
         $actions = $query->orderBy('created_at', 'desc')->get();

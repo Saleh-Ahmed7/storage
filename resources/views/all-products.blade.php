@@ -138,14 +138,18 @@
 
   <div class="container my-5">
     <h1 class="text-center mb-4 title-1">قائمة المنتجات</h1>
+@if(session('error'))
+    <div class="alert alert-danger text-center">
+        {{ session('error') }}
+    </div>
+@endif
 
-    @if(session('success'))
-      <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+@if(session('success'))
+    <div class="alert alert-success text-center">
+        {{ session('success') }}
+    </div>
+@endif
 
-    @if(session('error'))
-      <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
 
     <!-- بحث -->
     <form method="GET" action="/all-products" class="mb-3 d-flex justify-content-center">
@@ -192,7 +196,7 @@
           @endforelse
         </tbody>
       </table>
-
+  
       <div class="d-flex justify-content-end gap-3">
         <a href="{{ url('/add-product') }}" class="btn but-1 px-4">رجوع إلى صفحة الإضافة</a>
         <button type="submit" class="btn btn-success px-4">تأكيد جميع التعديلات</button>

@@ -13,13 +13,13 @@ return new class extends Migration
 {
     Schema::create('store_actions', function (Blueprint $table) {
         $table->id();
-        $table->unsignedBigInteger('store_id'); // رقم المنتج من جدول store
+        $table->unsignedBigInteger('product_id');
         $table->enum('action_type', ['add', 'withdraw']); // نوع الحركة
         $table->integer('quantity_changed'); // الكمية المضافة أو المسحوبة
         $table->timestamps();
 
         // الربط مع جدول store
-        $table->foreign('store_id')->references('id')->on('store')->onDelete('cascade');
+$table->foreign('product_id')->references('id')->on('store')->onDelete('cascade');
     });
 }
 };
