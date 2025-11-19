@@ -8,9 +8,12 @@
     "require": {
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.1",
+        "khaled.alshamaa/ar-php": "^7.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "milon/barcode": "^12.0",
+        "phenx/php-font-lib": "^1.0",
+        "phenx/php-svg-lib": "^1.0",
         "picqer/php-barcode-generator": "^3.2"
     },
     "require-dev": {

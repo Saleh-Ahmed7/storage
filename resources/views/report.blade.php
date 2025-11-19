@@ -47,10 +47,25 @@
     table { color: #000; border-radius: 10px; overflow: hidden; }
     th { background-color: #f6b111; }
     tr:nth-child(even){background-color:#eaeaea;}
+    .but-2 {
+      background: #f6b111;
+      color: #000;
+      border-radius: 40px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .but-2:hover {
+      background: transparent;
+      color: #f6b111;
+      border: 2px solid #f6b111;
+    }
   </style>
 </head>
 <body>
   <div class="container my-5">
+          <a href="{{url('/all-products')}}" type="submit" class="btn but-2 btn-primary px-4">< جميع المنتجات </a>
+
     <h1 class="text-center mb-4 title-1">📊 التقرير الشهري للمخزون</h1>
 
     <form method="GET" action="/report" class="card mb-4">

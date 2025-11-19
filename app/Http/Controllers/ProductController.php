@@ -140,15 +140,18 @@ class ProductController extends Controller
             }
 
             $product = Product::find($id);
-            if (!$product) continue;
+            // if (!$product) continue;
 
             $quantityChanged = (int)$data['quantity_changed'];
 
             if ($data['action_type'] == 'withdraw') {
                 if ($product->quantity < $quantityChanged) {
-                    continue; // تخطي المنتج إذا الكمية غير كافية
-                }
-                $product->quantity -= $quantityChanged;
+                    return back()->with('error', "الكمية غير كافية للسحب للمنتج: {$product->product_name}");
+                    
+                } else {
+                    $product->quantity -= $quantityChanged;
+                } 
+                
             } elseif ($data['action_type'] == 'add') {
                 $product->quantity += $quantityChanged;
             } else {
@@ -165,14 +168,10 @@ class ProductController extends Controller
             ]);
         }
 
+        
         return back()->with('success', 'تم حفظ جميع التعديلات وتسجيل العمليات بنجاح.');
-        if ($data['action_type'] == 'withdraw') {
-    if ($product->quantity < $quantityChanged) {
-        return back()->with('error', "الكمية غير كافية للسحب للمنتج: {$product->product_name}");
-    }
-    $product->quantity -= $quantityChanged;
 }
 
         
     }
-}
+

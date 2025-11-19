@@ -121,40 +121,45 @@
     }
 
     .btn-success {
-      background: #007bff;
       border: none;
       border-radius: 40px;
       font-weight: 600;
       transition: 0.3s;
     }
-
-    .btn-success:hover {
-      background: #0056b3;
+  .but-3 {
+      color: #ffffffff;
+      border-radius: 40px;
+      font-weight: 600;
+      transition: all 0.3s;
     }
+
 
   </style>
 </head>
-<body>
+<body >
 
   <div class="container my-5">
     <h1 class="text-center mb-4 title-1">قائمة المنتجات</h1>
 @if(session('error'))
-    <div class="alert alert-danger text-center">
+    <div id="errorAlert" class="alert alert-danger text-center">
         {{ session('error') }}
     </div>
 @endif
 
 @if(session('success'))
-    <div class="alert alert-success text-center">
+
+    <div id="errorAlert" class="alert alert-success  text-center">
         {{ session('success') }}
     </div>
 @endif
 
 
     <!-- بحث -->
-    <form method="GET" action="/all-products" class="mb-3 d-flex justify-content-center">
-      <input type="text" name="search" value="{{ $search ?? '' }}" class="form-control me-2 search w-50" placeholder="ابحث باسم المنتج أو امسح الباركود">
-      <button type="submit" class="btn but-1 px-4">بحث</button>
+    <form method="GET" action="/all-products" class="mb-3 d-flex justify-content-between">
+      <input type="text" name="search" value="{{ $search ?? '' }}" class="form-control mx-2 search w-100 " placeholder="ابحث باسم المنتج أو امسح الباركود">
+      <button type="submit" class="btn but-1 mx-2 px-4">بحث</button>
+      <a href="{{url('/report')}}" type="submit" class="btn but-3 btn-primary px-4">التقارير</a>
+
     </form>
 
     <!-- جدول المنتجات -->
@@ -179,14 +184,14 @@
             <td>{{ $product->location }}</td>
             <td class="barcode">{!! DNS1D::getBarcodeHTML($product->barcode, 'C128') !!}</td>
             <td>
-              <select name="products[{{ $product->id }}][action_type]" class="form-select">
+              <select name="products[{{ $product->id }}][action_type]" required class="form-select">
                 <option value="">— اختر —</option>
                 <option value="add">إضافة</option>
                 <option value="withdraw">سحب</option>
               </select>
             </td>
             <td>
-              <input type="number" name="products[{{ $product->id }}][quantity_changed]" class="form-control" placeholder="0">
+              <input type="number" name="products[{{ $product->id }}][quantity_changed]" required class="form-control" placeholder="0">
             </td>
           </tr>
           @empty
@@ -203,6 +208,16 @@
       </div>
     </form>
   </div>
+<script>
+    setTimeout(() => {
+        let alert = document.getElementById('errorAlert');
+        if (alert) {
+            alert.style.transition = "0.5s";
+            alert.style.opacity = 0;
+            setTimeout(() => alert.remove(), 500);
+        }
+    }, 3000); // 3000 ms يعني 3 ثواني
+</script>
 
 </body>
 </html>
