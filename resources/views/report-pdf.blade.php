@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +9,10 @@
 
  body {
         font-family: 'tajawal', DejaVu Sans, sans-serif;
-        direction: rtl;
         text-align: right;
         unicode-bidi: embed; /* important for Arabic text shaping */
     }
 .ltr {
-            direction: ltr;
             text-align: left;
             font-family: 'dejavu sans';
         }
@@ -22,18 +20,21 @@
 table {
     width: 100%;
     border-collapse: collapse;
-    direction: rtl;   /* force RTL in tables */
     unicode-bidi: embed; /* fix Arabic text order */
+        text-align: right;
+
 }
 
 th, td {
     border: 1px solid #000;
     padding: 6px;
-    direction: rtl;
+    text-align: center;
 }
-tr {
-    direction: rtl;
-}
+th {
+        background-color: #f6b111;
+        color:rgb(46, 45, 45)
+
+ }
 </style>
     
 </head>
@@ -43,19 +44,19 @@ tr {
 <table border="1" dir="rtl" cellpadding="5" cellspacing="0" width="100%">
     <thead>
         <tr>
-            <th>اسم المنتج</th>
-            <th>نوع العملية</th>
-            <th>الكمية</th>
             <th>التاريخ</th>
+            <th>الكمية</th>
+            <th>نوع العملية</th>
+            <th>اسم المنتج</th>
         </tr>
     </thead>
     <tbody dir='rtl'>
         @foreach ($actions as $action)
             <tr>
-                <td>{{ $action->product->product_name }}</td>
-                <td>{{ $action->action_type }}</td>
-                <td>{{ $action->quantity_changed }}</td>
                 <td>{{ $action->created_at }}</td>
+                <td>{{ $action->quantity_changed }}</td>
+                <td>{{ $action->action_type }}</td>
+                <td>{{ $action->product->product_name }}</td>
             </tr>
         @endforeach
     </tbody>
@@ -66,15 +67,15 @@ tr {
 <table border="1" cellpadding="5" cellspacing="0" width="100%">
     <thead>
         <tr>
-            <th>اسم المنتج</th>
             <th>الكمية</th>
+            <th>اسم المنتج</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($all_product as $action)
             <tr>
-                <td>{{$action->product_name}}</td>
                 <td>{{$action->quantity}}</td>
+                <td>{{$action->product_name}}</td>
             </tr>
         @endforeach
     </tbody>

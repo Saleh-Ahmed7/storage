@@ -41,12 +41,33 @@
       padding: 20px;
       backdrop-filter: blur(8px);
     }
-    .title-1 { color: #f6b111; }
-    .but-1 { background: #f6b111; color: #222; }
-    .but-1:hover { background: transparent; border: 1px solid #f6b111; color: #f6b111; }
-    table { color: #000; border-radius: 10px; overflow: hidden; }
-    th { background-color: #f6b111; }
-    tr:nth-child(even){background-color:#eaeaea;}
+    .title-1 {
+       color: #f6b111;
+      }
+    .but-1 {
+      background: #f6b111;
+      color: #222;
+    }
+    .but-1:hover {
+      background: transparent;
+      border: 1px solid #f6b111;
+      color: #f6b111;
+    }
+    table {
+    color: #000;
+    border-radius: 10px;
+    overflow: hidden;
+   }
+    th {
+      background-color: #f6b111 !important;
+      color: #000;
+      padding: 12px;
+      text-align: center;
+   }
+    
+    tr:nth-child(even){
+      background-color:#eaeaea;
+    }
     .but-2 {
       background: #f6b111;
       color: #000;
@@ -60,6 +81,7 @@
       color: #f6b111;
       border: 2px solid #f6b111;
     }
+    
   </style>
 </head>
 <body>
@@ -99,8 +121,17 @@
           @foreach($actions as $a)
           <tr>
             <td>{{ $a->product->product_name ?? 'غير معروف' }}</td>
-            <td>{{ $a->action_type == 'add' ? 'إضافة' : 'سحب' }}</td>
-            <td>{{ $a->quantity_changed }}</td>
+ @php
+        $color = '';
+        if($a->action_type === 'add') $color = '#3ADE5D ';
+        elseif($a->action_type === 'withdraw') $color = '#FF5C5C';
+        elseif($a->action_type === 'new_product') $color = '#FFE37A';
+    @endphp
+
+    <td style="background-color: {{ $color }}; font-weight: 600;">
+        {{ $a->action_type }}
+    </td>
+                <td>{{ $a->quantity_changed }}</td>
             <td>{{ $a->created_at }}</td>
           </tr>
           @endforeach
@@ -108,8 +139,8 @@
       </table>
 
       <div class="text-center mt-4">
-        <h5 class="text-success">📈 إجمالي الإضافات: {{ $totalAdd }}</h5>
-        <h5 class="text-danger">📉 إجمالي السحوبات: {{ $totalWithdraw }}</h5>
+        <h5 class="text-success">📈 إجمالي الكميات المضافة: {{ $totalAdd }}</h5>
+        <h5 class="text-danger">📉 إجمالي الكميات المسحوبة: {{ $totalWithdraw }}</h5>
       </div>
 
       <form method="POST" action="/report/pdf" class="text-center mt-3">

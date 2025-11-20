@@ -83,12 +83,16 @@
       color: #000;
       transition: all 0.3s;
     }
-
-    .btn-primary:hover {
-      background: transparent;
-      color: #f6b111;
-      border: 2px solid #f6b111;
+       .btn-primary:hover {
+      background: #919191;
+      border: none;
+      border-radius: 40px;
+      font-weight: 600;
+      color: #000;
+      transition: all 0.3s;
     }
+
+   
 
     .btn-secondary {
       background: #007bff;
@@ -98,11 +102,20 @@
       transition: all 0.3s;
     }
 
-    .btn-secondary:hover {
-      background: transparent;
-      color: #007bff;
-      border: 2px solid #007bff;
-    }
+   .btn-report{
+     background: #00c3ff;
+      border: none;
+      border-radius: 40px;
+      font-weight: 600;
+      transition: all 0.3s;
+   }
+     .btn-report:hover{
+     background: #00c3ff93;
+      border: none;
+      border-radius: 40px;
+      font-weight: 600;
+      transition: all 0.3s;
+   }
 
   </style>
 </head>
@@ -138,7 +151,9 @@
       </div>
 
       <div class="d-flex justify-content-between mt-4">
-        <a href="{{ url('/all-products') }}" class="btn btn-secondary px-4">رجوع إلى جميع المنتجات</a>
+        <a href="{{ url('/all-products') }}" class="btn btn-secondary px-4">جميع المنتجات</a>
+        <a href="{{ url('/report') }}" class="btn btn-report px-4">التقارير</a>
+
         <button type="submit" class="btn btn-primary px-4">إضافة المنتج</button>
       </div>
     </form>

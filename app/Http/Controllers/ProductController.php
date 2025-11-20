@@ -39,6 +39,13 @@ class ProductController extends Controller
         $generator = new BarcodeGeneratorHTML();
         $barcodeHtml = $generator->getBarcode($newBarcode, $generator::TYPE_CODE_128);
 
+         // سجل الحركة في جدول store_actions
+            StoreAction::create([
+                'product_id' => $product->id,
+                'action_type' => 'new_product',
+                'quantity_changed' => $request->quantity,
+            ]);
+
         return back()->with('success', 'تم إضافة المنتج "' . $request->product_name . '" بنجاح!')
                      ->with('barcodeHtml', $barcodeHtml);
     }
@@ -53,6 +60,8 @@ class ProductController extends Controller
     // صفحة عرض جميع المنتجات + بحث
     public function allProducts(Request $request)
     {
+                // session()->forget('cart');
+
         $search = $request->input('search');
 
         $query = Product::query();
@@ -75,21 +84,65 @@ class ProductController extends Controller
     }
 
     // بحث سريع عن طريق باركود (GET param ?barcode=xxxxx)
-    public function searchByBarcode(Request $request)
-    {
-        $barcode = $request->barcode;
-        $product = Product::where('barcode', $barcode)->first();
+   public function searchByBarcode(Request $request)
+{
+    $search = $request->search;
 
-        if ($product) {
-            // جهّز الـ barcode_html أيضاً
-            $generator = new BarcodeGeneratorHTML();
-            $product->barcode_html = $generator->getBarcode($product->barcode, $generator::TYPE_CODE_128);
+    // ابحث بالاسم أو الباركود
+    $product = Product::where('barcode', $search)
+        ->orWhere('product_name', 'LIKE', "%$search%")
+        ->first();
 
-            return view('all-products', ['products' => [$product], 'search' => $barcode]);
-        } else {
-            return back()->with('error', 'لم يتم العثور على المنتج بالباركود.');
+    if ($product) {
+        $cart = session()->get('cart', []);
+
+        if (!isset($cart[$product->id])) {
+            $cart[$product->id] = $product;
         }
+
+        session()->put('cart', $cart);
+
+        return redirect()->back()->with('success', 'تم إضافة المنتج للجدول.');
+    } else {
+        return back()->with('error', 'لا يوجد منتج بهذا الاسم أو الباركود.');
     }
+}
+
+public function addToCartAjax(Request $request)
+{
+    $product = Product::where('id', $request->id)->first();
+
+    if (!$product) {
+        return response()->json(['status' => 'error']);
+    }
+
+    $cart = session()->get('cart', []);
+
+    if (!isset($cart[$product->id])) {
+        $cart[$product->id] = $product;
+        session()->put('cart', $cart);
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'cart' => $cart
+    ]);
+}
+
+
+
+public function removeFromCart($id)
+{
+    $cart = session()->get('cart', []);
+
+    if (isset($cart[$id])) {
+        unset($cart[$id]);
+        session()->put('cart', $cart);
+    }
+
+    return redirect()->back()->with('success', 'تم إزالة المنتج من الجدول.');
+}
+
 
     // تعديل كمية لمنتج واحد وتسجيل الحركة
     public function updateQuantity(Request $request, $id)
@@ -168,7 +221,8 @@ class ProductController extends Controller
             ]);
         }
 
-        
+        // 🔥 بعد التعديل احذف السلة
+        session()->forget('cart');
         return back()->with('success', 'تم حفظ جميع التعديلات وتسجيل العمليات بنجاح.');
 }
 
