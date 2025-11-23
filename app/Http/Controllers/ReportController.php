@@ -13,6 +13,8 @@ class ReportController extends Controller
 {
     public function index(Request $request)
     {
+                session()->forget('cart');
+
         $from = $request->from;
         $to = $request->to;
 
@@ -25,7 +27,9 @@ class ReportController extends Controller
 
         $actions = $query->orderBy('created_at', 'desc')->get();
 
-        $totalAdd = $actions->where('action_type', 'add')->sum('quantity_changed');
+        $totalAdd = $actions->where('action_type', 'add' )->sum('quantity_changed');
+        $totalAdd = $actions->where('action_type', 'new_product')->sum('quantity_changed');
+                            
         $totalWithdraw = $actions->where('action_type', 'withdraw')->sum('quantity_changed');
 
         return view('report', compact('actions', 'from', 'to', 'totalAdd', 'totalWithdraw'));

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>التقرير الشهري</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  @include('layouts.head')
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
@@ -206,5 +206,7 @@
     </script>
     @endif
   </div>
+  @include('layouts.scripts')
+
 </body>
 </html>

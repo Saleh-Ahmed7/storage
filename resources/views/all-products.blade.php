@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>قائمة المنتجات</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  @include('layouts.head')
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
@@ -232,6 +232,8 @@
             <th>الكمية الحالية</th>
             <th>المكان</th>
             <th>الباركود</th>
+                        <th>حذف</th>
+
           </tr>
         </thead>
         <tbody>
@@ -241,9 +243,16 @@
             <td>{{ $product->quantity }}</td>
             <td>{{ $product->location }}</td>
             <td class="barcode">{!! DNS1D::getBarcodeHTML($product->barcode, 'C128') !!}</td>
-           
+            <td>
+            <form action="{{ route('product.delete', $product->id) }}" method="POST">
+      @csrf
+      @method('DELETE')
+      <button type="submit" class="btn btn-danger">حذف</button>
+  </form>
+           </td>
            
           </tr>
+
           @empty
           <tr>
             <td colspan="6" class="text-center text-muted">لا توجد نتائج</td>
