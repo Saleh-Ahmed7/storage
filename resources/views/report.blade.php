@@ -86,7 +86,9 @@
 </head>
 <body>
   <div class="container my-5">
-          <a href="{{url('/all-products')}}" type="submit" class="btn but-2 btn-primary px-4">< جميع المنتجات </a>
+          <a href="{{url('/all-products')}}" type="submit" class="btn btn-warning px-4"> جميع المنتجات </a>
+          <a href="{{url('/add-product')}}" type="submit" class="btn  btn-warning px-4"> رجوع إلى صفحة الإضافة </a>
+
 
     <h1 class="text-center mb-4 title-1">📊 التقرير الشهري للمخزون</h1>
 
@@ -120,18 +122,23 @@
         <tbody>
           @foreach($actions as $a)
           <tr>
-            <td>{{ $a->product->product_name ?? 'غير معروف' }}</td>
+            {{-- @php
+              dd($actions);
+            @endphp --}}
+            <td>{{ $a->product->product_name ?? $a->name }}</td>
  @php
         $color = '';
         if($a->action_type === 'add') $color = '#3ADE5D ';
-        elseif($a->action_type === 'withdraw') $color = '#FF5C5C';
+        elseif($a->action_type === 'withdraw') $color = '#67B2D8';
         elseif($a->action_type === 'new_product') $color = '#FFE37A';
+        elseif($a->action_type === 'deleted') $color = '#ff00009e';
+
     @endphp
 
     <td style="background-color: {{ $color }}; font-weight: 600;">
         {{ $a->action_type }}
     </td>
-                <td>{{ $a->quantity_changed }}</td>
+                <td>{{ $a->quantity_changed ?? 0 }}</td>
             <td>{{ $a->created_at }}</td>
           </tr>
           @endforeach

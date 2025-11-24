@@ -18,4 +18,9 @@ class Product extends Model
     {
         return $this->hasMany(StoreAction::class, 'product_id');
     }
+//     public function deleteRecord()
+// {
+//     return $this->hasOne(ProductDelete::class, 'product_id');
+// }
+
 }

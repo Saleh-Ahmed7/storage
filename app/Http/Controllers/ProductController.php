@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\StoreAction;
 use Illuminate\Http\Request;
 use Picqer\Barcode\BarcodeGeneratorHTML;
+use App\Models\ProductDelete;
 
 class ProductController extends Controller
 {
@@ -228,10 +229,16 @@ class ProductController extends Controller
 
     public function deleteQuantitie(Request $request)
     {
-
-        $action = Product::find($request->id);
-        $action->delete();
-
+        $product = Product::find($request->id);
+        
+    // سجّل عملية الحذف
+    ProductDelete::create([
+        'product_id' => $product->id,
+        'name' => $product->product_name,
+        'action_type' => $request->action_type,
+        
+    ]);
+    $product->delete();
         return back()->with('error', 'تم حذف المنتج بنجاح');
 
     }

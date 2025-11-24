@@ -36,7 +36,7 @@ th {
 
  }
 </style>
-    
+     
 </head>
 <body>
 <h2>تقرير العمليات</h2>
@@ -52,11 +52,19 @@ th {
     </thead>
     <tbody dir='rtl'>
         @foreach ($actions as $action)
+        @php
+        $color = '';
+        if($action->action_type === 'add') $color = '#3ADE5D ';
+        elseif($action->action_type === 'withdraw') $color = '#67B2D8';
+        elseif($action->action_type === 'new_product') $color = '#FFE37A';
+        elseif($action->action_type === 'deleted') $color = '#ff00009e';
+
+    @endphp
             <tr>
                 <td>{{ $action->created_at }}</td>
-                <td>{{ $action->quantity_changed }}</td>
-                <td>{{ $action->action_type }}</td>
-                <td>{{ $action->product->product_name }}</td>
+                <td>{{ $action->quantity_changed ?? 0 }}</td>
+                <td style="background-color: {{ $color }};">{{ $action->action_type }}</td>
+                <td>{{ $action->product->product_name ?? $action->name  }}</td>
             </tr>
         @endforeach
     </tbody>
@@ -64,6 +72,8 @@ th {
 
 <br>
 <!-- في هذا الجدول يظهر اسم المنتج مع الكمية الموجودة في المستودع :) -->
+<h3>الكميات الحالية</h3>
+
 <table border="1" cellpadding="5" cellspacing="0" width="100%">
     <thead>
         <tr>
@@ -80,5 +90,11 @@ th {
         @endforeach
     </tbody>
 </table>
+
+<div>
+        <h5> إجمالي الكميات المضافة: {{ $totalAdd }}</h5>
+        <h5> إجمالي الكميات المسحوبة: {{ strtr($totalWithdraw, '٠١٢٣٤٥٦٧٨٩', '0123456789') }}</h5>
+      </div>
+
 </body>
 </html>
