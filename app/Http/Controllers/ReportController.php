@@ -74,7 +74,7 @@ class ReportController extends Controller
 
         // Filter by date if provided
         if ($from && $to) {
-            $query->whereBetween('created_at', [$from.' 00:00:00', $to.' 23:59:59']);
+            $actions->whereBetween('created_at', [$from.' 00:00:00', $to.' 23:59:59']);
         }
 
         $all_product = Product::all();
@@ -85,6 +85,30 @@ class ReportController extends Controller
             'all_product' => $all_product,
             'totalAdd' => $totalAdd,
             'totalWithdraw' => $totalWithdraw,
+
+        ])->render();
+
+        // Handle Arabic shaping
+        $arabic = new Arabic;
+        $p = $arabic->arIdentify($reportHtml);
+
+        for ($i = count($p) - 1; $i >= 0; $i -= 2) {
+            $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i - 1], $p[$i] - $p[$i - 1]));
+            $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i - 1], $p[$i] - $p[$i - 1]);
+        }
+
+        $pdf = PDF::loadHTML($reportHtml);
+
+        return $pdf->download('تقرير العمليات.pdf');
+    }
+     public function allProductPDF(Request $request)
+    {
+        // ترتيب حسب created_at
+        $all_product = Product::all();
+
+        // Pass data to the view
+        $reportHtml = view('allproduct-pdf', [
+            'all_product' => $all_product,
 
         ])->render();
 

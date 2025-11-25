@@ -11,6 +11,9 @@
         font-family: 'tajawal', DejaVu Sans, sans-serif;
         text-align: right;
         unicode-bidi: embed; /* important for Arabic text shaping */
+        border: 1px solid black;
+        padding: 1rem;
+        margin: -2rem
     }
 .ltr {
             text-align: left;
@@ -39,7 +42,8 @@ th {
      
 </head>
 <body>
-<h2>تقرير العمليات</h2>
+  
+       <h2>تقرير العمليات</h2>
 
 <table border="1" dir="rtl" cellpadding="5" cellspacing="0" width="100%">
     <thead>
@@ -68,33 +72,14 @@ th {
             </tr>
         @endforeach
     </tbody>
-</table>
+</table> 
 
-<br>
-<!-- في هذا الجدول يظهر اسم المنتج مع الكمية الموجودة في المستودع :) -->
-<h3>الكميات الحالية</h3>
 
-<table border="1" cellpadding="5" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <th>الكمية</th>
-            <th>اسم المنتج</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($all_product as $action)
-            <tr>
-                <td>{{$action->quantity}}</td>
-                <td>{{$action->product_name}}</td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
+        <h5><span>{{ $totalAdd }}</span> إجمالي الكميات المضافة: </h5>
+        <h5><span>{{ $totalWithdraw}}</span> إجمالي الكميات المسحوبة:</h5>
+      
 
-<div>
-        <h5> إجمالي الكميات المضافة: {{ $totalAdd }}</h5>
-        <h5> إجمالي الكميات المسحوبة: {{ strtr($totalWithdraw, '٠١٢٣٤٥٦٧٨٩', '0123456789') }}</h5>
-      </div>
+
 
 </body>
 </html>

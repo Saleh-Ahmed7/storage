@@ -15,10 +15,14 @@ Route::post('/update-all-quantities', [ProductController::class, 'updateAllQuant
 
 Route::get('/report', [ReportController::class, 'index']);
 Route::post('/report/pdf', [ReportController::class, 'exportPdf']);
+Route::post('allProduct/pdf}', [ReportController::class, 'allProductPDF'])->name('allProductPDF');
 
 Route::get('/remove-from-cart/{id}', [ProductController::class, 'removeFromCart']);
 Route::get('/search-products', [ProductController::class, 'liveSearch']);
 Route::post('/add-to-cart', [ProductController::class, 'addToCartAjax']);
 
 Route::delete('/product/{id}', [ProductController::class, 'deleteQuantitie'])->name('product.delete');
+
+
+
 

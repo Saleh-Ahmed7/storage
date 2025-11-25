@@ -45,13 +45,16 @@
        color: #f6b111;
       }
     .but-1 {
-      background: #f6b111;
-      color: #222;
+          background: #f6b111;
+      color: #000;
+      border-radius: 40px;
+      font-weight: 600;
+      transition: all 0.3s;
     }
     .but-1:hover {
-      background: transparent;
-      border: 1px solid #f6b111;
+     background: transparent;
       color: #f6b111;
+      border: 1px solid #f6b111;
     }
     table {
     color: #000;
@@ -81,16 +84,20 @@
       color: #f6b111;
       border: 2px solid #f6b111;
     }
+     
     
   </style>
 </head>
 <body>
   <div class="container my-5">
-          <a href="{{url('/all-products')}}" type="submit" class="btn btn-warning px-4"> جميع المنتجات </a>
-          <a href="{{url('/add-product')}}" type="submit" class="btn  btn-warning px-4"> رجوع إلى صفحة الإضافة </a>
-
+     
+         
 
     <h1 class="text-center mb-4 title-1">📊 التقرير الشهري للمخزون</h1>
+    <div class="mb-3">
+      <a href="{{url('/all-products')}}" type="submit" class="btn but-1 px-4"> جميع المنتجات </a>
+               <a href="{{url('/add-product')}}" type="submit" class="btn but-1 px-4"> رجوع إلى صفحة الإضافة </a>
+    </div>
 
     <form method="GET" action="/report" class="card mb-4">
       <div class="row g-3 align-items-end">
@@ -149,13 +156,31 @@
         <h5 class="text-success">📈 إجمالي الكميات المضافة: {{ $totalAdd }}</h5>
         <h5 class="text-danger">📉 إجمالي الكميات المسحوبة: {{ $totalWithdraw }}</h5>
       </div>
-
-      <form method="POST" action="/report/pdf" class="text-center mt-3">
+      <div class="row d-flex justify-content-center">
+        <div class="col-2">
+          <form method="POST" action="/report/pdf" class="text-center mt-3">
         @csrf
         <input type="hidden" name="from" value="{{ $from }}">
         <input type="hidden" name="to" value="{{ $to }}">
-        <button class="btn btn-success">تحميل PDF</button>
+        <button class="btn btn-success">تقرير العمليات</button>
+        
+
       </form>
+        </div>
+        <div class="col-2">
+  <form method="POST" action="{{ Route('allProductPDF') }}" class="text-center mt-3">
+        @csrf
+        <input type="hidden" name="from" value="{{ $from }}">
+        <input type="hidden" name="to" value="{{ $to }}">
+        <button class="btn btn-success">جميع المنتجات</button>
+        
+
+      </form>
+        </div>
+      </div>
+
+      
+      
     </div>
 
     @php
