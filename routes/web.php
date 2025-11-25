@@ -25,3 +25,4 @@ Route::delete('/product/{id}', [ProductController::class, 'deleteQuantitie'])->n
 
 Route::get('/live-search', [ProductController::class, 'liveSearch']);
 
+Route::get('/resteCart', [ProductController::class, 'resteCart']);

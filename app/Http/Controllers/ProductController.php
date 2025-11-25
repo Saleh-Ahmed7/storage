@@ -151,6 +151,13 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'تم إزالة المنتج من الجدول.');
     }
 
+    public function resteCart()
+    {
+        session()->forget('cart');
+
+        return redirect()->back()->with('success', 'تم إزالة جميع المنتجات من الجدول.'); 
+    }
+
     // تعديل كمية لمنتج واحد وتسجيل الحركة
     public function updateQuantity(Request $request, $id)
     {

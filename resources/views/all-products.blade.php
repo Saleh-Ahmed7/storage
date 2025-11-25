@@ -184,8 +184,12 @@
         @if (count($cart) > 0)
             <form method="POST" action="{{ url('/update-all-quantities') }}">
                 @csrf
+                <div class="d-flex justify-content-between">
 
-                <h3 class="text-warning">المنتجات المختارة</h3>
+                  <h3 class="text-warning">المنتجات المختارة</h3>
+                   <a  href="{{ url('/resteCart') }}"
+                                          class="btn btn-danger mb-2">إلغاء الكل</a>
+                </div>
 
                 <table class="mb-3">
                     <thead>
