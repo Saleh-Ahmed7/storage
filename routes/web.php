@@ -8,7 +8,7 @@ Route::get('/add-product', [ProductController::class, 'index']);
 Route::post('/products', [ProductController::class, 'store']);
 Route::get('/all-products', [ProductController::class, 'allProducts']); // عرض + بحث
 Route::get('/', function () { return redirect('/add-product'); });
-Route::get('/search-barcode', [ProductController::class, 'searchByBarcode']);
+Route::get('/search-barcode', [ProductController::class, 'search']);
 
 Route::post('/update-quantity/{id}', [ProductController::class, 'updateQuantity']);
 Route::post('/update-all-quantities', [ProductController::class, 'updateAllQuantities']);
@@ -23,6 +23,5 @@ Route::post('/add-to-cart', [ProductController::class, 'addToCartAjax']);
 
 Route::delete('/product/{id}', [ProductController::class, 'deleteQuantitie'])->name('product.delete');
 
-
-
+Route::get('/live-search', [ProductController::class, 'liveSearch']);
 

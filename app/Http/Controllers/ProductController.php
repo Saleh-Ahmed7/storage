@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductDelete;
 use App\Models\StoreAction;
 use Illuminate\Http\Request;
 use Picqer\Barcode\BarcodeGeneratorHTML;
-use App\Models\ProductDelete;
 
 class ProductController extends Controller
 {
@@ -86,8 +86,7 @@ class ProductController extends Controller
         return view('all-products', compact('products', 'search'));
     }
 
-    // بحث سريع عن طريق باركود (GET param ?barcode=xxxxx)
-    public function searchByBarcode(Request $request)
+    public function search(Request $request)
     {
         $search = $request->search;
 
@@ -130,6 +129,14 @@ class ProductController extends Controller
             'status' => 'success',
             'cart' => $cart,
         ]);
+    }
+
+    public function liveSearch(Request $request)
+    {
+        $query = $request->get('q');
+        $products = Product::where('product_name', 'LIKE', "%{$query}%")->get();
+
+        return response()->json($products);
     }
 
     public function removeFromCart($id)
@@ -230,15 +237,16 @@ class ProductController extends Controller
     public function deleteQuantitie(Request $request)
     {
         $product = Product::find($request->id);
-        
-    // سجّل عملية الحذف
-    ProductDelete::create([
-        'product_id' => $product->id,
-        'name' => $product->product_name,
-        'action_type' => $request->action_type,
-        
-    ]);
-    $product->delete();
+
+        // سجّل عملية الحذف
+        ProductDelete::create([
+            'product_id' => $product->id,
+            'name' => $product->product_name,
+            'action_type' => $request->action_type,
+
+        ]);
+        $product->delete();
+
         return back()->with('error', 'تم حذف المنتج بنجاح');
 
     }
