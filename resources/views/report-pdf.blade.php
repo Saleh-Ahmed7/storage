@@ -8,7 +8,7 @@
 
 
  body {
-        font-family: 'tajawal', DejaVu Sans, sans-serif;
+        font-family: DejaVu Sans, sans-serif;
         text-align: right;
         unicode-bidi: embed; /* important for Arabic text shaping */
         border: 1px solid black;
@@ -24,13 +24,13 @@ table {
     width: 100%;
     border-collapse: collapse;
     unicode-bidi: embed; /* fix Arabic text order */
-        text-align: right;
+    text-align: right;
 
 }
 
 th, td {
     border: 1px solid #000;
-    padding: 6px;
+    padding: 2px;
     text-align: center;
 }
 th {
@@ -38,14 +38,33 @@ th {
         color:rgb(46, 45, 45)
 
  }
+ .total{
+    background-color: gray;
+    color:white;
+ }
+.tatle-pdf{
+font-size: 30px
+}
 </style>
      
 </head>
 <body>
+    
   
-       <h2>تقرير العمليات</h2>
 
-<table border="1" dir="rtl" cellpadding="5" cellspacing="0" width="100%">
+
+
+    <p class="tatle-pdf">تقرير العمليات</p>
+        <table class="table-total"  border="1" dir="rtl" cellpadding="5" cellspacing="0" width="100%">
+            <td class="row-total">{{ $totalAdd }}</td>
+                <td class="total" colspan="2"  class="">اجمالي المسحوب</td>
+                <td class="row-total">{{ $totalWithdraw}}</td>
+                <td class="total" colspan="2"  class="">اجمالي المضاف</td>
+        </table>
+
+<br>
+
+<table class="mt-5" border="1" dir="rtl" cellpadding="5" cellspacing="0" width="100%">
     <thead>
         <tr>
             <th>التاريخ</th>
@@ -71,13 +90,12 @@ th {
                 <td>{{ $action->product->product_name ?? $action->name  }}</td>
             </tr>
         @endforeach
+        
     </tbody>
 </table> 
 
 
-        <h5><span>{{ $totalAdd }}</span> إجمالي الكميات المضافة: </h5>
-        <h5><span>{{ $totalWithdraw}}</span> إجمالي الكميات المسحوبة:</h5>
-      
+     
 
 
 

@@ -17,7 +17,7 @@
     }
 .ltr {
             text-align: left;
-            font-family: 'dejavu sans';
+            font-family: 'Cairo';
         }
 
 table {
@@ -30,7 +30,7 @@ table {
 
 th, td {
     border: 1px solid #000;
-    padding: 6px;
+    padding: 2px;
     text-align: center;
 }
 th {

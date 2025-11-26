@@ -140,11 +140,12 @@
 </head>
 
 <body>
+    @include('layouts.app')
 
     <div class="container my-5">
         <h1 class="text-center mb-4 title-1">قائمة المنتجات</h1>
         <div class="d-flex justify-content-start mb-3 gap-3">
-            <a href="{{ url('/add-product') }}" class="btn but-1 px-4">رجوع إلى صفحة الإضافة</a>
+            <a href="{{ url('/add-product') }}" class="btn but-1 px-4">صفحة الإضافة</a>
         </div>
         @if (session('error'))
             <div id="errorAlert" class="alert alert-danger text-center">

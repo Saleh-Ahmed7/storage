@@ -1,28 +1,42 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/add-product', [ProductController::class, 'index']);
-Route::post('/products', [ProductController::class, 'store']);
-Route::get('/all-products', [ProductController::class, 'allProducts']); // عرض + بحث
-Route::get('/', function () { return redirect('/add-product'); });
-Route::get('/search-barcode', [ProductController::class, 'search']);
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::post('/update-quantity/{id}', [ProductController::class, 'updateQuantity']);
-Route::post('/update-all-quantities', [ProductController::class, 'updateAllQuantities']);
+Route::middleware('auth')->group(function () {
+    Route::get('/add-product', [ProductController::class, 'index']);
+    Route::post('/products', [ProductController::class, 'store']);
+    Route::get('/all-products', [ProductController::class, 'allProducts'])->name('all.products'); // عرض + بحث
+    Route::get('/', function () {
+        return redirect('/add-product');
+    });
+    Route::get('/search-barcode', [ProductController::class, 'search']);
 
-Route::get('/report', [ReportController::class, 'index']);
-Route::post('/report/pdf', [ReportController::class, 'exportPdf']);
-Route::post('allProduct/pdf}', [ReportController::class, 'allProductPDF'])->name('allProductPDF');
+    Route::post('/update-quantity/{id}', [ProductController::class, 'updateQuantity']);
+    Route::post('/update-all-quantities', [ProductController::class, 'updateAllQuantities']);
 
-Route::get('/remove-from-cart/{id}', [ProductController::class, 'removeFromCart']);
-Route::get('/search-products', [ProductController::class, 'liveSearch']);
-Route::post('/add-to-cart', [ProductController::class, 'addToCartAjax']);
+    Route::get('/report', [ReportController::class, 'index']);
+    Route::post('/report/pdf', [ReportController::class, 'exportPdf']);
+    Route::post('allProduct/pdf}', [ReportController::class, 'allProductPDF'])->name('allProductPDF');
 
-Route::delete('/product/{id}', [ProductController::class, 'deleteQuantitie'])->name('product.delete');
+    Route::get('/remove-from-cart/{id}', [ProductController::class, 'removeFromCart']);
+    Route::get('/search-products', [ProductController::class, 'liveSearch']);
+    Route::post('/add-to-cart', [ProductController::class, 'addToCartAjax']);
 
-Route::get('/live-search', [ProductController::class, 'liveSearch']);
+    Route::delete('/product/{id}', [ProductController::class, 'deleteQuantitie'])->name('product.delete');
 
-Route::get('/resteCart', [ProductController::class, 'resteCart']);
+    Route::get('/live-search', [ProductController::class, 'liveSearch']);
+
+    Route::get('/resteCart', [ProductController::class, 'resteCart']);
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
