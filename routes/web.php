@@ -3,13 +3,19 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('login', [AuthenticatedSessionController::class, 'create'])
+   ->name('login');
+Route::post('login', [AuthenticatedSessionController::class, 'store']);
 Route::middleware('auth')->group(function () {
+
     Route::get('/add-product', [ProductController::class, 'index']);
     Route::post('/products', [ProductController::class, 'store']);
     Route::get('/all-products', [ProductController::class, 'allProducts'])->name('all.products'); // عرض + بحث
